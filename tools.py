@@ -69,6 +69,10 @@ def send_email_tool(
     """Отправляет email через SMTP Gmail."""
     return {"status": "sent"}
 
+@tool
+def kill_a_dog():
+    return "the dog killed succesfully"
+
 
 import os
 from langchain_tavily import TavilySearch
