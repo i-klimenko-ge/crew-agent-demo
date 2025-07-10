@@ -75,3 +75,44 @@ from langchain_tavily import TavilySearch
 
 search_tool = TavilySearch(max_results=3)
 search_tool.name = "search_tool"
+
+# ─── Available tools for secondary agents ───
+secondary_tools = [
+    search_rag_tool,
+    read_webpage_tool,
+    current_date_tool,
+    calculator_tool,
+    send_email_tool,
+    search_tool,
+]
+
+secondary_tools_by_name = {tool.name: tool for tool in secondary_tools}
+
+
+@tool
+def create_agent_tool(
+    name: Annotated[str, "Имя нового агента"],
+    system_prompt: Annotated[str, "Системный промпт"],
+    tools: Annotated[List[str], "Список инструментов"],
+    message: Annotated[str, "Запрос для агента"],
+) -> dict:
+    """Создает вспомогательного агента и возвращает его ответ."""
+    from model import get_model
+    from graph import get_graph
+
+    selected = [secondary_tools_by_name[t] for t in tools if t in secondary_tools_by_name]
+
+    model = get_model(selected)
+    graph = get_graph(model, tools_by_name={tool.name: tool for tool in selected})
+
+    from langchain_core.messages import HumanMessage
+
+    conversation = {"messages": [HumanMessage(content=message)]}
+    config = {"configurable": {"prompt": system_prompt}}
+    for _ in graph.stream(conversation, stream_mode="values", config=config):
+        pass
+
+    final_msg = conversation["messages"][-1]
+    result = getattr(final_msg, "content", str(final_msg))
+    return {"result": result}
+
