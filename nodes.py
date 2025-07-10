@@ -4,7 +4,6 @@ from langchain_core.runnables import RunnableConfig
 from state import AgentState
 from tools import (
     response_tool,
-    search_rag_tool,
     read_webpage_tool,
     current_date_tool,
     calculator_tool,
@@ -18,7 +17,6 @@ tools_by_name = {
     tool.name: tool
     for tool in [
         response_tool,
-        search_rag_tool,
         read_webpage_tool,
         current_date_tool,
         calculator_tool,

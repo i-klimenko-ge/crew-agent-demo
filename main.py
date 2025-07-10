@@ -4,7 +4,7 @@ from graph import get_graph
 import os
 from dotenv import load_dotenv
 from langchain_gigachat import GigaChat
-from tools import provide_answer_tool, response_tool, search_rag_tool, read_webpage_tool, current_date_tool, calculator_tool, search_tool
+from tools import response_tool, read_webpage_tool, current_date_tool, calculator_tool, search_tool
 
 
 # Получаем ключ
@@ -23,9 +23,7 @@ model = GigaChat(
         )
 
 tools_list = [
-    provide_answer_tool, # Вернуть ответ пользователю
     response_tool,  # Задать вопрос пользователю
-    search_rag_tool,     # Искать в документации SberDocs
     search_tool,         # Искать в интернете
     read_webpage_tool,   # Просмотреть содержимое страницы
     current_date_tool,   # Узнать текущую дату

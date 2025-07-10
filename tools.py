@@ -1,17 +1,8 @@
 from langchain_core.tools import tool
 from typing import List, Annotated
-from rag import FaissRagSource  # your existing classes
 from bs4 import BeautifulSoup
 # from langchain_community.tools import TavilySearchResults
 
-# ——— Instantiate your RAG sources somewhere global ———
-RAG_SOURCE = FaissRagSource("docs", "Официальная документация по электронному документообороту", "rag_sources/docs/vectors.index", "rag_sources/docs/texts.json")
-
-@tool
-def search_rag_tool(query: Annotated[str, "запрос для поиска"]) -> dict:
-    """Выполнить поиск в документации по электронному документообороту"""
-    resp: dict = RAG_SOURCE.query(query)
-    return {"result": resp}
 
 @tool
 def response_tool(question: str) -> dict:
