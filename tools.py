@@ -69,7 +69,6 @@ search_tool.name = "search_tool"
 
 # ─── Available tools for secondary agents ───
 secondary_tools = [
-    search_rag_tool,
     read_webpage_tool,
     current_date_tool,
     calculator_tool,
