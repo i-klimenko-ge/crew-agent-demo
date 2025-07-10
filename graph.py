@@ -1,6 +1,11 @@
 from langgraph.graph import StateGraph, END
 from state import AgentState
-from nodes import reflect_node, use_tool_node, should_use_tool, orchestrator_tools_by_name
+from nodes import (
+    reflect_node,
+    use_tool_node,
+    should_use_tool,
+    orchestrator_tools_by_name,
+)
 from functools import partial
 
 def get_graph(model, tools_by_name=None):
@@ -10,7 +15,7 @@ def get_graph(model, tools_by_name=None):
     workflow = StateGraph(AgentState)
 
     reflect_with_tools = partial(reflect_node, model=model)
-    use_tool_with_dict = partial(use_tool_node, tools_by_name=tools_by_name)
+    use_tool_with_dict = partial(use_tool_node, tools_dict=tools_by_name)
 
     # Step 1: reflect (plan & choose action)
     workflow.add_node("reflect", reflect_with_tools)
