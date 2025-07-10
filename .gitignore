@@ -1,0 +1,6 @@
+*.pyc
+test*
+.env
+.vscode
+rag_sources
+.DS_Store
