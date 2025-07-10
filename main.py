@@ -4,7 +4,10 @@ from graph import get_graph
 import os
 from dotenv import load_dotenv
 from langchain_gigachat import GigaChat
-from tools import response_tool, read_webpage_tool, current_date_tool, calculator_tool, search_tool
+from tools import (
+    create_agent_tool,
+    response_tool,
+)
 
 
 # Получаем ключ
@@ -23,11 +26,8 @@ model = GigaChat(
         )
 
 tools_list = [
-    response_tool,  # Задать вопрос пользователю
-    search_tool,         # Искать в интернете
-    read_webpage_tool,   # Просмотреть содержимое страницы
-    current_date_tool,   # Узнать текущую дату
-    calculator_tool,     # Калькулятор
+    create_agent_tool,  # Создать вспомогательного агента
+    response_tool,       # Связь с пользователем
 ]
 
 print("Tool names handed to graph:", [t.name for t in tools_list])
@@ -66,7 +66,7 @@ while True:
             # TODO: for first and last message. Maybe it shold made another way
             if msg in conversation["messages"]:
                 continue
-            if msg.name in ["provide_answer_tool", "question_user_tool"]:
+            if msg.name in ["question_user_tool"]:
                 continue
 
             if isinstance(msg, AIMessage):

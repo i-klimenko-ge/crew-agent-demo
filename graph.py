@@ -1,12 +1,11 @@
 from langgraph.graph import StateGraph, END
 from state import AgentState
-from nodes import reflect_node, use_tool_node, should_use_tool
+from nodes import reflect_node, use_tool_node, should_use_tool, orchestrator_tools_by_name
 from functools import partial
 
 def get_graph(model, tools_by_name=None):
     if tools_by_name is None:
-        from nodes import tools_by_name as default_tools
-        tools_by_name = default_tools
+        tools_by_name = orchestrator_tools_by_name
 
     workflow = StateGraph(AgentState)
 

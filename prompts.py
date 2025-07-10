@@ -10,8 +10,8 @@ with open(prompts_path, 'r', encoding='utf-8') as f:
     prompts = yaml.safe_load(f)
 
 
-def create_system_prompt() -> str:
-    return prompts['system_prompt']
+def create_system_prompt(tools: List[str]) -> str:
+    return prompts['system_prompt'].format(tools=", ".join(tools))
 
 
 def get_react_instructions() -> str:
