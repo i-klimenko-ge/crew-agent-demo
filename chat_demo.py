@@ -94,7 +94,7 @@ def launch_chat(graph, first_message=None, window_height=300, prompt = None):
     # you can monkeypatch it here before the first message:
     
     import nodes                         # adjust to your project path
-    nodes.tools_by_name["question_user_tool"] = question_user_tool
+    nodes.orchestrator_tools_by_name["question_user_tool"] = question_user_tool
 
     # optional seed message
     if first_message:
