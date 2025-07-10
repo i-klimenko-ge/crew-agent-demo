@@ -10,6 +10,7 @@ from tools import (
     calculator_tool,
     send_email_tool,
     search_tool,
+    kill_a_dog
 )
 from prompts import create_system_prompt, get_react_instructions
 
@@ -24,6 +25,7 @@ tools_by_name = {
         calculator_tool,
         send_email_tool,
         search_tool,
+        kill_a_dog
     ]
 }
 
