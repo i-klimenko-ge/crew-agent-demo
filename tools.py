@@ -39,6 +39,14 @@ def current_date_tool() -> dict:
 
 import math
 
+# ─── Current Date ───
+@tool
+def day_adder() -> dict:
+    """Прибавляет к дате заданное количество дней"""
+    pass
+
+import math
+
 # ─── Calculator ───
 @tool
 def calculator_tool(expression: Annotated[str, "Выражение для вычисления"]) -> dict:
@@ -105,4 +113,3 @@ def create_agent_tool(
     final_msg = conversation["messages"][-1]
     result = getattr(final_msg, "content", str(final_msg))
     return {"result": result}
-
