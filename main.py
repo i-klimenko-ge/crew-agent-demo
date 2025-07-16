@@ -1,29 +1,14 @@
 from langchain_core.messages import HumanMessage, AIMessage
 from colorama import init, Fore, Style, Back
 from graph import get_graph
-import os
 from dotenv import load_dotenv
-from langchain_gigachat import GigaChat
 from tools import (
     create_agent_tool,
     response_tool,
 )
 
-
-# Получаем ключ
-api_key = os.getenv("GIGACHAT_API_KEY")
-if not api_key:
-    print("Error: GIGACHAT_API_KEY not found in environment variables")
-
-# Инициализируем модель
-model = GigaChat(
-            credentials=api_key,
-            scope="GIGACHAT_API_CORP",
-            model="GigaChat-2-Max",
-            base_url="https://gigachat-preview.devices.sberbank.ru/api/v1",
-            verify_ssl_certs=False,
-            profanity_check=False
-        )
+load_dotenv()
+from model import get_model
 
 tools_list = [
     create_agent_tool,  # Создать вспомогательного агента
@@ -32,7 +17,7 @@ tools_list = [
 
 print("Tool names handed to graph:", [t.name for t in tools_list])
 
-model = model.bind_tools(tools_list)
+model = get_model(tools_list)
 
 graph = get_graph(model)
 
