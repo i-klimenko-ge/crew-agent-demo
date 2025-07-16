@@ -1,8 +1,11 @@
 import os
 import sys
 from colorama import init, Fore, Style, Back
+from dotenv import load_dotenv
 
 from langchain_gigachat import GigaChat
+
+load_dotenv()
 
 # Get API key from environment
 api_key = os.getenv("GIGACHAT_API_KEY")
