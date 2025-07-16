@@ -1,13 +1,14 @@
+from dotenv import load_dotenv
+load_dotenv()
 from langchain_core.messages import HumanMessage, AIMessage
 from colorama import init, Fore, Style, Back
 from graph import get_graph
-from dotenv import load_dotenv
+
 from tools import (
     create_agent_tool,
     response_tool,
 )
 
-load_dotenv()
 from model import get_model
 
 tools_list = [
