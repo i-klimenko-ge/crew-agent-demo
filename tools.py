@@ -107,8 +107,8 @@ def create_agent_tool(
 
     conversation = {"messages": [HumanMessage(content=message)]}
     config = {"configurable": {"prompt": system_prompt}}
-    for _ in graph.stream(conversation, stream_mode="values", config=config):
-        pass
+    for step in graph.stream(conversation, stream_mode="values", config=config):
+        conversation = step
 
     final_msg = conversation["messages"][-1]
     result = getattr(final_msg, "content", str(final_msg))
