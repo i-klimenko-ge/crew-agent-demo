@@ -1,4 +1,5 @@
 import json
+import time
 from langchain_core.messages import ToolMessage, SystemMessage, HumanMessage
 from langchain_core.runnables import RunnableConfig
 from state import AgentState
@@ -14,6 +15,18 @@ from tools import (
     read_notes_tool,
 )
 from prompts import create_system_prompt, get_react_instructions
+
+# ─── Utility Functions ─────────────────────────────────────────────────────────
+def invoke_with_retry(model, messages, config, retries: int = 3, delay: float = 0.5):
+    """Invoke the LLM with simple retry logic."""
+    last_exception = None
+    for _ in range(retries):
+        try:
+            return model.invoke(messages, config)
+        except Exception as exc:  # noqa: BLE001
+            last_exception = exc
+            time.sleep(delay)
+    raise last_exception
 
 # Map name → tool
 orchestrator_tools_by_name = {
@@ -54,7 +67,11 @@ def reflect_node(state: AgentState, config: RunnableConfig, model):
 
     system = SystemMessage(prompt)
 
-    response = model.invoke([system] + list(state["messages"]), config)
+    response = invoke_with_retry(
+        model,
+        [system] + list(state["messages"]),
+        config,
+    )
 
     return {"messages": [response]}
 
