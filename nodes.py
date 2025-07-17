@@ -10,6 +10,8 @@ from tools import (
     calculator_tool,
     send_email_tool,
     search_tool,
+    write_note_tool,
+    read_notes_tool,
 )
 from prompts import create_system_prompt, get_react_instructions
 
@@ -19,6 +21,8 @@ orchestrator_tools_by_name = {
     for tool in [
         create_agent_tool,
         response_tool,
+        write_note_tool,
+        read_notes_tool,
     ]
 }
 
@@ -30,6 +34,8 @@ secondary_tools_by_name = {
         calculator_tool,
         send_email_tool,
         search_tool,
+        write_note_tool,
+        read_notes_tool,
     ]
 }
 

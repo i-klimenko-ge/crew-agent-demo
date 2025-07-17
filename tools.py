@@ -1,6 +1,7 @@
 from langchain_core.tools import tool
 from typing import List, Annotated
 from bs4 import BeautifulSoup
+from blackboard import blackboard
 # from langchain_community.tools import TavilySearchResults
 
 
@@ -9,8 +10,10 @@ def response_tool(question: str) -> dict:
     """Задать пользователю вопрос"""
     # Print the question to the terminal
     print(f"\n[Follow-up question]: {question}")
+    blackboard.post("assistant", question)
     # Wait for the user's response
     answer = input("> ")
+    blackboard.post("user", answer)
     return {"answer": answer}
 
 import requests
@@ -69,6 +72,22 @@ def send_email_tool(
     return {"status": "sent"}
 
 
+@tool
+def write_note_tool(
+    author: Annotated[str, "Имя агента"],
+    content: Annotated[str, "Текст записи"],
+) -> dict:
+    """Добавляет запись на общую доску."""
+    blackboard.post(author, content)
+    return {"status": "written"}
+
+
+@tool
+def read_notes_tool() -> dict:
+    """Возвращает все записи с доски."""
+    return {"notes": blackboard.read()}
+
+
 import os
 from langchain_tavily import TavilySearch
 
@@ -82,6 +101,8 @@ secondary_tools = [
     calculator_tool,
     send_email_tool,
     search_tool,
+    write_note_tool,
+    read_notes_tool,
 ]
 
 secondary_tools_by_name = {tool.name: tool for tool in secondary_tools}
