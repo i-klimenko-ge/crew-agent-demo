@@ -4,6 +4,7 @@ from nodes import (
     reflect_node,
     use_tool_node,
     should_use_tool,
+    response_gotten,
     orchestrator_tools_by_name,
 )
 from functools import partial
@@ -33,7 +34,11 @@ def get_graph(model, tools_by_name=None):
     )
 
     # After executing, loop back to planning
-    workflow.add_edge("use_tool", "reflect")
+    workflow.add_conditional_edges(
+        "use_tool",
+        response_gotten,
+        {"reflect": "reflect", "end": END},
+    )
 
     # Compile for use
     graph = workflow.compile()
@@ -44,6 +49,6 @@ if __name__ == "__main__":
     import io
     from PIL import Image
 
-    imageStream = io.BytesIO(graph.get_graph().draw_mermaid_png())
+    imageStream = io.BytesIO(get_graph(None).get_graph().draw_mermaid_png())
     imageFile = Image.open(imageStream)
     imageFile.save('graph.jpg')

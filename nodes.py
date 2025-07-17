@@ -92,3 +92,8 @@ def should_use_tool(state: AgentState):
     """If the last LLM output included a tool call, go to execute; otherwise end."""
     last = state["messages"][-1]
     return "use_tool" if last.tool_calls else "end"
+
+def response_gotten(state: AgentState):
+    """If the last LLM output included a tool call, go to execute; otherwise end."""
+    last = state["messages"][-1]
+    return "end" if last.name == "response_tool" else "reflect"
