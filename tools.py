@@ -2,7 +2,7 @@ from langchain_core.tools import tool
 from typing import List, Annotated
 from bs4 import BeautifulSoup
 from blackboard import blackboard
-# from langchain_community.tools import TavilySearchResults
+from colorama import init, Fore, Style, Back
 
 
 @tool
@@ -129,6 +129,8 @@ def create_agent_tool(
     conversation = {"messages": [HumanMessage(content=message)]}
     config = {"configurable": {"prompt": system_prompt}}
     for step in graph.stream(conversation, stream_mode="values", config=config):
+        msg = step["messages"][-1]
+        print(f"{Fore.CYAN}{msg.content}{Style.RESET_ALL}")
         conversation = step
 
     final_msg = conversation["messages"][-1]
