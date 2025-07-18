@@ -121,9 +121,16 @@ def create_agent_tool(
     tools: Annotated[List[str], "Список инструментов"],
     message: Annotated[str, "Запрос для агента"],
 ) -> dict:
-    """Создает вспомогательного агента и возвращает его ответ."""
+    """Создает вспомогательного агента и возвращает его ответ.
+
+    Независимо от переданных инструментов, агент всегда получает возможность
+    читать и писать заметки через ``read_notes_tool`` и ``write_note_tool``.
+    """
     from model import get_model
     from graph import get_graph
+
+    # Always provide note tools to the secondary agent
+    tools = list(dict.fromkeys(tools + ["read_notes_tool", "write_note_tool"]))
 
     selected = [secondary_tools_by_name[t] for t in tools if t in secondary_tools_by_name]
 
