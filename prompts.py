@@ -16,3 +16,11 @@ def create_system_prompt(tools: List[str]) -> str:
 
 def get_react_instructions() -> str:
     return prompts['react_instructions']
+
+
+def add_subagent_reminder(prompt: str) -> str:
+    """Append the common reminder for subagents to a prompt."""
+    reminder = prompts.get('subagent_reminder')
+    if not reminder:
+        return prompt
+    return f"{prompt.rstrip()}\n\n{reminder}"

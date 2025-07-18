@@ -1,5 +1,6 @@
 from langchain_core.tools import tool
 from typing import List, Annotated
+from prompts import add_subagent_reminder
 from bs4 import BeautifulSoup
 from blackboard import blackboard
 from colorama import init, Fore, Style, Back
@@ -132,6 +133,7 @@ def create_agent_tool(
     from langchain_core.messages import HumanMessage
 
     conversation = {"messages": [HumanMessage(content=message)]}
+    system_prompt = add_subagent_reminder(system_prompt)
     config = {"configurable": {"prompt": system_prompt}}
     for step in graph.stream(conversation, stream_mode="values", config=config):
         msg = step["messages"][-1]
