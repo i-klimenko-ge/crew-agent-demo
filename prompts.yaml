@@ -92,7 +92,7 @@ react_instructions: |
   Прибавить 4 дня (чтобы получить пятницу следующей недели).
   Вернуть: 2025-07-18.
   """,
-      tools=["read_notes_tool", "write_note_tool", "current_date_tool", "day_adder"],
+      tools=["read_notes_tool", "current_date_tool", "day_adder"],
       message="Определи ближайшую пятницу"
   )
   ```

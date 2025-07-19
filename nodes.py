@@ -47,7 +47,6 @@ secondary_tools_by_name = {
         calculator_tool,
         send_email_tool,
         search_tool,
-        write_note_tool,
         read_notes_tool,
     ]
 }
