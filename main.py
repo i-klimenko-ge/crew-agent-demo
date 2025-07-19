@@ -3,7 +3,6 @@ load_dotenv()
 from langchain_core.messages import HumanMessage, AIMessage
 from colorama import init, Fore, Style, Back
 from graph import get_graph
-from blackboard import blackboard
 
 from tools import (
     create_agent_tool,
@@ -35,8 +34,6 @@ while True:
         print("Goodbye!")
         break
 
-    blackboard.post("user", user_input)
-
     first_human_message = HumanMessage(content=user_input)
     # Add the user's message as a HumanMessage
     conversation["messages"].append(first_human_message)
@@ -60,7 +57,6 @@ while True:
 
             if isinstance(msg, AIMessage):
                 print(f"{Fore.YELLOW}{msg.content}{Style.RESET_ALL}")
-                blackboard.post("assistant", msg.content)
             else:
                 msg.pretty_print()
             conversation["messages"].append(msg)
