@@ -107,7 +107,6 @@ secondary_tools = [
     calculator_tool,
     send_email_tool,
     search_tool,
-    write_note_tool,
     read_notes_tool,
 ]
 
@@ -124,13 +123,14 @@ def create_agent_tool(
     """Создает вспомогательного агента и возвращает его ответ.
 
     Независимо от переданных инструментов, агент всегда получает возможность
-    читать и писать заметки через ``read_notes_tool`` и ``write_note_tool``.
+    читать заметки через ``read_notes_tool``. Его итоговый ответ автоматически
+    записывается в общие заметки.
     """
     from model import get_model
     from graph import get_graph
 
-    # Always provide note tools to the secondary agent
-    tools = list(dict.fromkeys(tools + ["read_notes_tool", "write_note_tool"]))
+    # Always provide the reading note tool to the secondary agent
+    tools = list(dict.fromkeys(tools + ["read_notes_tool"]))
 
     selected = [secondary_tools_by_name[t] for t in tools if t in secondary_tools_by_name]
 
@@ -149,4 +149,8 @@ def create_agent_tool(
 
     final_msg = conversation["messages"][-1]
     result = getattr(final_msg, "content", str(final_msg))
+
+    # store final result as a note for future agents
+    blackboard.post(name, result)
+
     return {"result": result}
