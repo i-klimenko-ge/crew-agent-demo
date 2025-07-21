@@ -3,6 +3,7 @@ load_dotenv()
 from langchain_core.messages import HumanMessage, AIMessage
 from colorama import init, Fore, Style, Back
 from graph import get_graph
+from blackboard import blackboard
 
 from tools import (
     create_agent_tool,
@@ -33,6 +34,8 @@ while True:
     if user_input.lower() in ('exit', 'quit'):
         print("Goodbye!")
         break
+
+    blackboard.post("пользователь", user_input)
 
     first_human_message = HumanMessage(content=user_input)
     # Add the user's message as a HumanMessage
