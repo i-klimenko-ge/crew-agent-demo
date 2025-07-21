@@ -1,8 +1,11 @@
 import os
 import sys
 from colorama import init, Fore, Style, Back
+from dotenv import load_dotenv
 
 from langchain_gigachat import GigaChat
+
+load_dotenv()
 
 # Get API key from environment
 api_key = os.getenv("GIGACHAT_API_KEY")
@@ -14,7 +17,7 @@ def get_model(tools_list):
                 credentials=api_key,
                 scope="GIGACHAT_API_CORP",
                 model="GigaChat-2-Max",
-                base_url="https://gigachat-preview.devices.sberbank.ru/api/v1",
+                # base_url="https://gigachat-preview.devices.sberbank.ru/api/v1",
                 verify_ssl_certs=False,
                 profanity_check=False
             )

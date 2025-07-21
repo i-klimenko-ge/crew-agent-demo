@@ -1,17 +1,22 @@
 from langgraph.graph import StateGraph, END
 from state import AgentState
-from nodes import reflect_node, use_tool_node, should_use_tool
+from nodes import (
+    reflect_node,
+    use_tool_node,
+    should_use_tool,
+    response_gotten,
+    orchestrator_tools_by_name,
+)
 from functools import partial
 
 def get_graph(model, tools_by_name=None):
     if tools_by_name is None:
-        from nodes import tools_by_name as default_tools
-        tools_by_name = default_tools
+        tools_by_name = orchestrator_tools_by_name
 
     workflow = StateGraph(AgentState)
 
     reflect_with_tools = partial(reflect_node, model=model)
-    use_tool_with_dict = partial(use_tool_node, tools_by_name=tools_by_name)
+    use_tool_with_dict = partial(use_tool_node, tools_dict=tools_by_name)
 
     # Step 1: reflect (plan & choose action)
     workflow.add_node("reflect", reflect_with_tools)
@@ -29,7 +34,11 @@ def get_graph(model, tools_by_name=None):
     )
 
     # After executing, loop back to planning
-    workflow.add_edge("use_tool", "reflect")
+    workflow.add_conditional_edges(
+        "use_tool",
+        response_gotten,
+        {"reflect": "reflect", "end": END},
+    )
 
     # Compile for use
     graph = workflow.compile()
@@ -40,6 +49,6 @@ if __name__ == "__main__":
     import io
     from PIL import Image
 
-    imageStream = io.BytesIO(graph.get_graph().draw_mermaid_png())
+    imageStream = io.BytesIO(get_graph(None).get_graph().draw_mermaid_png())
     imageFile = Image.open(imageStream)
     imageFile.save('graph.jpg')
