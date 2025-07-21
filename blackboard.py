@@ -22,7 +22,11 @@ class Blackboard:
         """Store a note from an agent and write it to ``notes.txt``."""
         self.notes.append({"author": author, "content": content})
         with open(self.file_path, "a", encoding="utf-8") as f:
-            f.write(f"{author}: {content}\n")
+            f.write("---------------------------------------------------------------------------\n")
+            f.write(f"{author}:\n")
+            f.write("---------------------------------------------------------------------------\n")
+            f.write(f"{content}\n")
+            f.write("---------------------------------------------------------------------------\n\n")
 
     def read(self) -> List[Dict[str, str]]:
         """Return a copy of all notes."""
