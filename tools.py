@@ -5,18 +5,6 @@ from bs4 import BeautifulSoup
 from blackboard import blackboard
 from colorama import init, Fore, Style, Back
 
-
-@tool
-def response_tool(message: str) -> dict:
-    """Коммуникация с пользователем. Можно задать вопрос или предоставить развернутый ответ"""
-    # Print the question to the terminal
-    print(f"\n[Agent message]: {message}")
-    blackboard.post("assistant", message)
-    # Wait for the user's response
-    answer = input("> ")
-    blackboard.post("user", answer)
-    return {"answer": answer}
-
 @tool
 def response_tool(response: Annotated[str, "сообщение для пользователя"]) -> dict:
     """Отправить сообщение пользователю. Это может быть вопрос или полный и развернутый ответ, либо вежливое прощание"""
